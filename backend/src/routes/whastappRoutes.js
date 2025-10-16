@@ -6,10 +6,8 @@ dotenv.config();
 
 const router = express.Router();
 
-const TWILIO_ACCOUNT_SID="AC52a1631a913dc9386433378bb5a65611"
-const TWILIO_AUTH_TOKEN="e2d64c128e32fdedf04581243ef0b632"
 
-const client = twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
+const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
 router.post("/send-whatsapp", async (req, res) => {
   try {

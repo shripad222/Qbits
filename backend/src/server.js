@@ -5,6 +5,9 @@ import notificationRoutes from './routes/notificationRoutes.js';
 import campRoutes from './routes/campsRoutes.js';
 import whatsappRoutes from './routes/whastappRoutes.js';
 
+import dotenv from "dotenv";
+dotenv.config(); // looks in the same folder by default
+
 const app = express()
 const PORT = process.env.PORT || 3000;
 
