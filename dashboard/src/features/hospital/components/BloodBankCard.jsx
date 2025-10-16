@@ -5,7 +5,7 @@ export default function BloodBankCard() {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-gradient-to-br from-red-400 to-pink-200 rounded-3xl shadow-lg p-[2px]">
+    <div className=" min-h-screen bg-gray-50 p-6">
       <div className="bg-white/60 backdrop-blur-md rounded-3xl p-6" onClick={() => navigate("/hospital/blood-bank")} >
           <div className="flex justify-between items-center mb-2">
             <h2 className="text-3xl font-bold">Blood Bank</h2>
