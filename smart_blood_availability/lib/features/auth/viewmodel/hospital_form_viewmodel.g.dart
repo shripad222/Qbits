@@ -6,25 +6,59 @@ part of 'hospital_form_viewmodel.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$hospitalFormViewModelHash() =>
-    r'1af7d0388c015e73049901600fb7d43db6b7f5b0';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [HospitalFormViewModel].
 @ProviderFor(HospitalFormViewModel)
-final hospitalFormViewModelProvider =
-    AutoDisposeNotifierProvider<
-      HospitalFormViewModel,
-      AsyncValue<bool>
-    >.internal(
-      HospitalFormViewModel.new,
-      name: r'hospitalFormViewModelProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$hospitalFormViewModelHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+const hospitalFormViewModelProvider = HospitalFormViewModelProvider._();
 
-typedef _$HospitalFormViewModel = AutoDisposeNotifier<AsyncValue<bool>>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class HospitalFormViewModelProvider
+    extends $NotifierProvider<HospitalFormViewModel, AsyncValue<bool>> {
+  const HospitalFormViewModelProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'hospitalFormViewModelProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$hospitalFormViewModelHash();
+
+  @$internal
+  @override
+  HospitalFormViewModel create() => HospitalFormViewModel();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AsyncValue<bool> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<AsyncValue<bool>>(value),
+    );
+  }
+}
+
+String _$hospitalFormViewModelHash() =>
+    r'8d2a416d950e9bb057ccbe4a9b8034cc539f4d2c';
+
+abstract class _$HospitalFormViewModel extends $Notifier<AsyncValue<bool>> {
+  AsyncValue<bool> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<AsyncValue<bool>, AsyncValue<bool>>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<bool>, AsyncValue<bool>>,
+              AsyncValue<bool>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
