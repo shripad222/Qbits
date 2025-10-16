@@ -8,6 +8,8 @@ class GlassCard extends StatelessWidget {
   final Widget child;
   final double? width;
   final double? height;
+
+  final EdgeInsetsGeometry? padding;
   final EdgeInsetsGeometry? margin;
   final bool enableHoverEffect;
   final bool enableGlow;
@@ -19,6 +21,7 @@ class GlassCard extends StatelessWidget {
     required this.child,
     this.width,
     this.height,
+    this.padding,
     this.margin,
     this.enableGlow = false,
     this.enableHoverEffect = true,
@@ -28,6 +31,7 @@ class GlassCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomCard(
+      padding: padding,
       width: width,
       height: height,
       onTap: onTap,
