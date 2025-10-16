@@ -23,7 +23,7 @@ class DonorFormViewModel extends _$DonorFormViewModel {
   String _location = '';
   double _weight = 0.0;
   DateTime? _dateOfLastDonation;
-  Map<String, bool> _healthScreening = {
+  final Map<String, bool> _healthScreening = {
     'health_issues': false,
     'pregnant': false,
     'high_risk_travel': false,
