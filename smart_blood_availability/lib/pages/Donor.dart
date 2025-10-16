@@ -3,6 +3,7 @@ import 'package:smart_blood_availability/components/CustomCard.dart';
 import '../components/notification_card.dart';
 import '../components/notification_item.dart';
 import 'blood_bank_map.dart';
+import 'certificate_page.dart';
 
 class Donor extends StatefulWidget {
   const Donor({super.key});
@@ -272,11 +273,17 @@ class _LandingPageState extends State<LandingPage> {
               child: GlassCard(
                 margin: EdgeInsets.zero,
                 onTap: () {
-                  // Navigate to Certificates screen
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const CertificatePage(donorName: "John Doe"),
+                    ),
+                  );
                 },
                 child: _buildActionContent("Certificates", Icons.card_giftcard, Colors.purple),
               ),
             ),
+
           ],
         ),
       ],

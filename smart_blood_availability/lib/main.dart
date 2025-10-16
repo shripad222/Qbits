@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_blood_availability/core/services/supabase_service.dart';
 import 'package:smart_blood_availability/pages/Donor.dart';
 
+import 'features/auth/view/registration_view.dart';
+
 void main() async {
   // 1. Ensure Flutter bindings are initialized before calling native methods
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,8 +46,8 @@ class BloodBankApp extends StatelessWidget {
         ),
       ),
       // Set the unified registration page as the home screen
-      // home: const RegistrationView(),
-      home: Donor(),
+      home: const RegistrationView(),
+      // home: Donor(),
     );
   }
 }

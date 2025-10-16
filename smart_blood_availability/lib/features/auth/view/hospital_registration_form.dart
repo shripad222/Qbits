@@ -13,231 +13,613 @@ class HospitalRegistrationForm extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final viewModel = ref.watch(hospitalFormViewModelProvider.notifier);
     final state = ref.watch(hospitalFormViewModelProvider);
-    final internalBBStatus =
-        state.value ?? false; // Status of internal blood bank
+    final internalBBStatus = state.value ?? false;
 
     const List<String> hospitalTypes = ['Government', 'Private'];
 
-    return Form(
-      key: viewModel.formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const Text(
-            'Hospital Registration',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    return SingleChildScrollView(
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.blue.shade50, Colors.white],
           ),
-          const SizedBox(height: 16),
-          // Image upload (hospital photo/logo)
-          Row(
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              ElevatedButton.icon(
-                onPressed: () => viewModel.pickImage(),
-                icon: const Icon(Icons.photo_camera),
-                label: const Text('Upload Hospital Image'),
+              // Header Section
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Colors.blue.shade700, Colors.blue.shade500],
+                  ),
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.blue.withOpacity(0.3),
+                      blurRadius: 8,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.local_hospital,
+                      size: 40,
+                      color: Colors.white,
+                    ),
+                    const SizedBox(height: 12),
+                    const Text(
+                      'Hospital Registration',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      'Join the healthcare network',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.white70,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(width: 12),
-              if (viewModel.hospitalImagePath != null)
-                Expanded(
+              const SizedBox(height: 28),
+
+              // Hospital Image Section
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.blue.shade200,
+                    width: 2,
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.blue.shade50,
+                ),
+                child: Column(
+                  children: [
+                    if (viewModel.hospitalImagePath == null)
+                      Icon(
+                        Icons.image_outlined,
+                        size: 50,
+                        color: Colors.blue.shade300,
+                      )
+                    else
+                      SizedBox(
+                        height: 140,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image.file(
+                            File(viewModel.hospitalImagePath!),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    const SizedBox(height: 12),
+                    ElevatedButton.icon(
+                      onPressed: () => viewModel.pickImage(),
+                      icon: const Icon(Icons.photo_camera),
+                      label: const Text('Upload Hospital Image'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue.shade600,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
+                    if (viewModel.hospitalImagePath != null) ...[
+                      const SizedBox(height: 8),
+                      Text(
+                        viewModel.hospitalImagePath!.split('/').last,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.blue.shade600,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+
+              // Hospital Image Preview after successful submission
+              if (viewModel.hospitalImagePath != null && viewModel.hasSubmitted) ...[
+                const SizedBox(height: 16),
+                Text(
+                  'Uploaded Hospital Image Preview:',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue.shade700,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                SizedBox(
+                  height: 140,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.file(
+                      File(viewModel.hospitalImagePath!),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24),
+              ],
+
+              // Hospital Image Section
+              // Container(
+              //   padding: const EdgeInsets.all(16),
+              //   decoration: BoxDecoration(
+              //     border: Border.all(
+              //       color: Colors.blue.shade200,
+              //       width: 2,
+              //     ),
+              //     borderRadius: BorderRadius.circular(12),
+              //     color: Colors.blue.shade50,
+              //   ),
+              //   child: Column(
+              //     children: [
+              //       if (viewModel.hospitalImagePath == null)
+              //         Icon(
+              //           Icons.image_outlined,
+              //           size: 50,
+              //           color: Colors.blue.shade300,
+              //         )
+              //       else
+              //         SizedBox(
+              //           height: 140,
+              //           child: ClipRRect(
+              //             borderRadius: BorderRadius.circular(12),
+              //             child: Image.file(
+              //               File(viewModel.hospitalImagePath!),
+              //               fit: BoxFit.cover,
+              //             ),
+              //           ),
+              //         ),
+              //       const SizedBox(height: 12),
+              //       ElevatedButton.icon(
+              //         onPressed: () => viewModel.pickImage(),
+              //         icon: const Icon(Icons.photo_camera),
+              //         label: const Text('Upload Hospital Image'),
+              //         style: ElevatedButton.styleFrom(
+              //           backgroundColor: Colors.blue.shade600,
+              //           foregroundColor: Colors.white,
+              //           shape: RoundedRectangleBorder(
+              //             borderRadius: BorderRadius.circular(8),
+              //           ),
+              //         ),
+              //       ),
+              //       if (viewModel.hospitalImagePath != null) ...[
+              //         const SizedBox(height: 8),
+              //         Text(
+              //           viewModel.hospitalImagePath!.split('/').last,
+              //           overflow: TextOverflow.ellipsis,
+              //           style: TextStyle(
+              //             fontSize: 12,
+              //             color: Colors.blue.shade600,
+              //           ),
+              //         ),
+              //       ],
+              //     ],
+              //   ),
+              // ),
+              const SizedBox(height: 28),
+
+              // Basic Information Section
+              _buildSectionHeader('Basic Information'),
+              const SizedBox(height: 12),
+              _buildTextField(
+                'Name of Hospital',
+                    (val) => viewModel.updateField('name', val),
+                validator: (val) =>
+                val!.isEmpty ? 'Hospital name required' : null,
+              ),
+              const SizedBox(height: 12),
+              _buildTextField(
+                'License Number',
+                    (val) => viewModel.updateField('licenseNumber', val),
+                validator: (val) =>
+                val!.isEmpty ? 'License number required' : null,
+              ),
+              const SizedBox(height: 12),
+              _buildDropdown(
+                'Hospital Type',
+                hospitalTypes,
+                    (val) => viewModel.updateField('type', val),
+              ),
+              const SizedBox(height: 28),
+
+              // Registration Document Section
+              _buildSectionHeader('Registration Document'),
+              const SizedBox(height: 12),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.amber.shade200,
+                    width: 2,
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.amber.shade50,
+                ),
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.picture_as_pdf,
+                      size: 40,
+                      color: Colors.amber.shade600,
+                    ),
+                    const SizedBox(height: 12),
+                    ElevatedButton.icon(
+                      onPressed: () => viewModel.pickPdf(),
+                      icon: const Icon(Icons.upload_file),
+                      label: const Text('Upload Registration PDF'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.amber.shade600,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
+                    if (viewModel.registrationPdfPath != null) ...[
+                      const SizedBox(height: 12),
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.amber.shade200),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.description,
+                              color: Colors.amber.shade600,
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Text(
+                                viewModel.registrationPdfPath!.split('/').last,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.amber.shade700,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      ElevatedButton.icon(
+                        onPressed: () =>
+                            OpenFile.open(viewModel.registrationPdfPath),
+                        icon: const Icon(Icons.open_in_new),
+                        label: const Text('Open PDF'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.amber.shade600,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+              const SizedBox(height: 28),
+
+              // Location Information Section
+              _buildSectionHeader('Location Information'),
+              const SizedBox(height: 12),
+              _buildTextField(
+                'Street Address',
+                    (val) => viewModel.updateField('location', val),
+              ),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildTextField(
+                      'City',
+                          (val) => viewModel.updateField('city', val),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: _buildTextField(
+                      'State / Province',
+                          (val) => viewModel.updateField('stateProvince', val),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              _buildTextField(
+                'Pincode',
+                    (val) => viewModel.updateField('pincode', val),
+                keyboardType: TextInputType.number,
+                controller: viewModel.pincodeController,
+              ),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      onPressed: () =>
+                          viewModel.fetchCoordinatesFromAddress(),
+                      icon: const Icon(Icons.location_searching),
+                      label: const Text('Find Coordinates'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.teal.shade600,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      onPressed: () => viewModel.useDeviceLocation(),
+                      icon: const Icon(Icons.my_location),
+                      label: const Text('Current Location'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.teal.shade600,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              if (viewModel.coordinates != null) ...[
+                const SizedBox(height: 12),
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.teal.shade50,
+                    border: Border.all(color: Colors.teal.shade200),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                   child: Text(
-                    viewModel.hospitalImagePath!.split('/').last,
-                    overflow: TextOverflow.ellipsis,
+                    'Coordinates: ${viewModel.coordinates!.latitude
+                        .toStringAsFixed(6)}, ${viewModel.coordinates!.longitude
+                        .toStringAsFixed(6)}',
+                    style: TextStyle(
+                      color: Colors.teal.shade700,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          // 1. Name of Hospital
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Name of Hospital',
-              border: OutlineInputBorder(),
-            ),
-            onChanged: (val) => viewModel.updateField('name', val),
-            validator: (val) =>
-                val!.isEmpty ? 'Hospital name is required' : null,
-          ),
-          const SizedBox(height: 16),
-          // 2. License Number
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'License Number',
-              border: OutlineInputBorder(),
-            ),
-            onChanged: (val) => viewModel.updateField('licenseNumber', val),
-            validator: (val) =>
-                val!.isEmpty ? 'License Number is required' : null,
-          ),
-          const SizedBox(height: 16),
-          // 3. Type
-          AppDropdown<String>(
-            labelText: 'Type',
-            value: null,
-            items: hospitalTypes,
-            itemLabelMapper: (type) => type,
-            onChanged: (val) => viewModel.updateField('type', val),
-          ),
-          const SizedBox(height: 16),
-          // Registration certificate (PDF) upload
-          Row(
-            children: [
-              ElevatedButton.icon(
-                onPressed: () => viewModel.pickPdf(),
-                icon: const Icon(Icons.picture_as_pdf),
-                label: const Text('Upload Registration (PDF)'),
-              ),
-              const SizedBox(width: 12),
-              if (viewModel.registrationPdfPath != null)
-                Expanded(
-                  child: Text(
-                    viewModel.registrationPdfPath!.split('/').last,
-                    overflow: TextOverflow.ellipsis,
+              ],
+              const SizedBox(height: 28),
+
+              // Blood Bank Section
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.red.shade200,
+                    width: 2,
                   ),
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.red.shade50,
                 ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          // 4-7. Location Fields (Street, City, State, Pincode)
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Location (Street Address)',
-              border: OutlineInputBorder(),
-            ),
-            onChanged: (val) => viewModel.updateField('location', val),
-          ),
-          const SizedBox(height: 16),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'City',
-              border: OutlineInputBorder(),
-            ),
-            onChanged: (val) => viewModel.updateField('city', val),
-          ),
-          const SizedBox(height: 16),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'State / Province',
-              border: OutlineInputBorder(),
-            ),
-            onChanged: (val) => viewModel.updateField('stateProvince', val),
-          ),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              Expanded(
-                child: TextFormField(
-                  controller: viewModel.pincodeController,
-                  decoration: const InputDecoration(
-                    labelText: 'Pincode',
-                    border: OutlineInputBorder(),
-                  ),
-                  keyboardType: TextInputType.number,
-                  onChanged: (val) => viewModel.updateField('pincode', val),
+                child: Row(
+                  children: [
+                    Checkbox(
+                      value: internalBBStatus,
+                      onChanged: viewModel.toggleInternalBloodBank,
+                      activeColor: Colors.red.shade600,
+                    ),
+                    Expanded(
+                      child: Text(
+                        'Internal Blood Bank Available',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 15,
+                          color: Colors.red.shade700,
+                        ),
+                      ),
+                    ),
+                    Icon(
+                      internalBBStatus
+                          ? Icons.check_circle
+                          : Icons.radio_button_unchecked,
+                      color: Colors.red.shade600,
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(height: 24),
+
+              // Conditional Blood Bank form
+              if (internalBBStatus) ...[
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.red.shade300,
+                      width: 2,
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                    color: Colors.red.shade50,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        'Blood Bank Details',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red.shade700,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      const BloodBankRegistrationForm(
+                        embeddedInHospital: true,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 28),
+              ],
+
+              // Submit Button
               ElevatedButton(
-                onPressed: () => viewModel.fetchCoordinatesFromAddress(),
-                child: const Text('Find Coordinates'),
-              ),
-              const SizedBox(width: 8),
-              ElevatedButton(
-                onPressed: () => viewModel.useDeviceLocation(),
-                child: const Text('Use my current location'),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-
-          // Coordinates display (non-editable)
-          if (viewModel.coordinates != null) ...[
-            Text(
-              'Coordinates: ${viewModel.coordinates!.latitude.toStringAsFixed(6)}, ${viewModel.coordinates!.longitude.toStringAsFixed(6)}',
-            ),
-            const SizedBox(height: 8),
-          ],
-
-          // Image preview
-          if (viewModel.hospitalImagePath != null) ...[
-            const SizedBox(height: 8),
-            SizedBox(
-              height: 120,
-              child: Image.file(File(viewModel.hospitalImagePath!)),
-            ),
-            const SizedBox(height: 8),
-          ],
-
-          // PDF preview/open
-          if (viewModel.registrationPdfPath != null) ...[
-            ElevatedButton.icon(
-              onPressed: () => OpenFile.open(viewModel.registrationPdfPath),
-              icon: const Icon(Icons.picture_as_pdf),
-              label: const Text('Open Uploaded PDF'),
-            ),
-            const SizedBox(height: 8),
-          ],
-          const SizedBox(height: 24),
-
-          // 11. CRITICAL: Internal Blood Bank Available Checkbox
-          Row(
-            children: [
-              Checkbox(
-                value: internalBBStatus,
-                onChanged: viewModel.toggleInternalBloodBank,
-              ),
-              const Flexible(
-                child: Text(
-                  'Internal Blood Bank Available (Check this box to include Blood Bank details)',
-                  style: TextStyle(fontWeight: FontWeight.w600),
+                onPressed:
+                state.isLoading ? null : viewModel.registerHospital,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue.shade600,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  disabledBackgroundColor: Colors.grey.shade400,
+                ),
+                child: state.isLoading
+                    ? const SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor:
+                    AlwaysStoppedAnimation<Color>(Colors.white),
+                  ),
+                )
+                    : const Text(
+                  'Register Hospital',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
               ),
+
+              // Error Display
+              if (state.hasError)
+                Padding(
+                  padding: const EdgeInsets.only(top: 16.0),
+                  child: Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.red.shade50,
+                      border: Border.all(color: Colors.red.shade300),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.error_outline,
+                          color: Colors.red.shade600,
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Text(
+                            'Registration Failed: ${state.error}',
+                            style: TextStyle(
+                              color: Colors.red.shade600,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              const SizedBox(height: 16),
             ],
           ),
-          const SizedBox(height: 24),
-
-          // Conditional Display of Blood Bank Form Fields
-          // The Blood Bank Form will appear if the CRITICAL checkbox is checked.
-          if (internalBBStatus) ...[
-            const Divider(height: 40),
-            const Text(
-              'Blood Bank Details (Continuation)',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.red,
-              ),
-            ),
-            const SizedBox(height: 16),
-            const BloodBankRegistrationForm(embeddedInHospital: true),
-            const SizedBox(height: 16),
-          ],
-
-          // Submit Button
-          ElevatedButton(
-            onPressed: state.isLoading ? null : viewModel.registerHospital,
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-            ),
-            child: state.isLoading
-                ? const SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  )
-                : const Text('Register Hospital'),
-          ),
-
-          // Error Display
-          if (state.hasError)
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Text(
-                'Registration Failed: ${state.error}',
-                style: const TextStyle(color: Colors.red),
-              ),
-            ),
-        ],
+        ),
       ),
+    );
+  }
+
+  Widget _buildSectionHeader(String title) {
+    return Container(
+      padding: const EdgeInsets.only(bottom: 12),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: Colors.blue.shade300,
+            width: 2,
+          ),
+        ),
+      ),
+      child: Text(
+        title,
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: Colors.blue.shade700,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextField(String label,
+      Function(String) onChanged, {
+        TextInputType keyboardType = TextInputType.text,
+        TextEditingController? controller,
+        String? Function(String?)? validator,
+      }) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: label,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: Colors.blue.shade200),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: Colors.blue.shade200, width: 1.5),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: Colors.blue.shade600, width: 2),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+        labelStyle: TextStyle(color: Colors.blue.shade600),
+      ),
+      keyboardType: keyboardType,
+      onChanged: onChanged,
+      validator: validator,
+    );
+  }
+
+  Widget _buildDropdown(String label,
+      List<String> items,
+      void Function(String?) onChanged, // <-- use nullable String
+      ) {
+    return AppDropdown<String>(
+      labelText: label,
+      value: null,
+      items: items,
+      itemLabelMapper: (item) => item,
+      onChanged: onChanged,
     );
   }
 }

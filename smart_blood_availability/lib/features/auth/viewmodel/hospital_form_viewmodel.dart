@@ -212,20 +212,19 @@ class HospitalFormViewModel extends _$HospitalFormViewModel {
   }
 
   /// The main logic for submitting the Hospital form data.
+
+  bool hasSubmitted = false; // Add this in your ViewModel
+
   Future<void> registerHospital() async {
-    if (!formKey.currentState!.validate()) {
-      return;
-    }
-    // Set loading state
+    if (!formKey.currentState!.validate()) return;
+
     state = const AsyncLoading();
 
     try {
-      // Map current fields to the user's 'hospital' table schema
       final hospitalRow = <String, dynamic>{
         'name': _name,
         'lic_no': _licenseNumber,
         'type': _type ?? '',
-        // store location as JSONB (street, city, state, pincode)
         'location': {
           'street': _location,
           'city': _city,
@@ -235,13 +234,11 @@ class HospitalFormViewModel extends _$HospitalFormViewModel {
         'contact_no': _contactNumber,
         'email': _emailAddress,
         'internal_bb': _internalBloodBankAvailable ? 'yes' : 'no',
-        // profile_pic/scanned_copy_url will be updated later if files present
       };
 
       final service = ref.read(supabaseServiceProvider);
       final inserted = await service.insertData('hospital', hospitalRow);
 
-      // Supabase returns a list of inserted rows; extract the id
       int? hospitalId;
       if (inserted is List && inserted.isNotEmpty) {
         final first = inserted.first as Map<String, dynamic>;
@@ -250,7 +247,6 @@ class HospitalFormViewModel extends _$HospitalFormViewModel {
         hospitalId = inserted['id'] as int?;
       }
 
-      // If PDF registration scanned copy is present, insert into hospital_reg_scan
       if (registrationPdfPath != null && hospitalId != null) {
         final scanRow = {
           'hospital_id': hospitalId,
@@ -259,7 +255,6 @@ class HospitalFormViewModel extends _$HospitalFormViewModel {
         };
         await service.insertData('hospital_reg_scan', scanRow);
 
-        // update hospital scanned_copy_url field
         await service.updateData(
           'hospital',
           {'scanned_copy_url': registrationPdfPath},
@@ -268,7 +263,6 @@ class HospitalFormViewModel extends _$HospitalFormViewModel {
         );
       }
 
-      // If profile image provided, update hospital.profile_pic
       if (hospitalImagePath != null && hospitalId != null) {
         await service.updateData(
           'hospital',
@@ -278,13 +272,14 @@ class HospitalFormViewModel extends _$HospitalFormViewModel {
         );
       }
 
-      // Set success state (true/false indicates internal blood bank status)
       state = AsyncData(_internalBloodBankAvailable);
-      // NOTE: If _internalBloodBankAvailable is true, the next step would be
-      // to submit the Blood Bank form data using its own viewmodel.
+
+      // ✅ Mark as submitted successfully
+      hasSubmitted = true;
+      state = AsyncData(_internalBloodBankAvailable);
     } catch (e) {
-      // Set error state
       state = AsyncError(e, StackTrace.current);
     }
   }
+
 }

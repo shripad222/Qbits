@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_blood_availability/features/auth/viewmodel/blood_bank_form_viewmodel.dart';
 import 'dart:io';
-import 'package:open_file/open_file.dart';
 
 class BloodBankRegistrationForm extends ConsumerWidget {
   // If embeddedInHospital is true, form will hide fields that would be
@@ -23,251 +22,482 @@ class BloodBankRegistrationForm extends ConsumerWidget {
       'Apheresis',
     ];
 
-    return Form(
-      key: viewModel.formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const Text(
-            'Blood Bank Registration',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    return SingleChildScrollView(
+      child: Container(
+        decoration: !embeddedInHospital
+            ? BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.red.shade50, Colors.white],
           ),
-          const SizedBox(height: 16),
-
-          // Profile image upload
-          Row(
-            children: [
-              ElevatedButton.icon(
-                onPressed: () => viewModel.pickProfileImage(),
-                icon: const Icon(Icons.photo_camera),
-                label: const Text('Upload Photo'),
-              ),
-              const SizedBox(width: 12),
-              if (viewModel.profileImagePath != null)
-                Expanded(
-                  child: Text(
-                    viewModel.profileImagePath!.split('/').last,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          if (viewModel.profileImagePath != null) ...[
-            SizedBox(
-              height: 120,
-              child: Image.file(File(viewModel.profileImagePath!)),
-            ),
-            const SizedBox(height: 12),
-          ],
-
-          if (!embeddedInHospital) ...[
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Blood Bank Name',
-                border: OutlineInputBorder(),
-              ),
-              onChanged: (v) => viewModel.updateField('name', v),
-            ),
-            const SizedBox(height: 12),
-          ],
-
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Parent Organization (if any)',
-              border: OutlineInputBorder(),
-            ),
-            onChanged: (v) => viewModel.updateField('parentOrganization', v),
-          ),
-          const SizedBox(height: 12),
-
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'License / Registration Number',
-              border: OutlineInputBorder(),
-            ),
-            onChanged: (v) => viewModel.updateField('licenseNumber', v),
-          ),
-          const SizedBox(height: 12),
-
-          // Accreditations
-          const Text(
-            'Accreditations (select all that apply)',
-            style: TextStyle(fontWeight: FontWeight.w600),
-          ),
-          Wrap(
-            spacing: 8,
-            children: availableAccreditations.map((acc) {
-              final selected = viewModel.accreditations.contains(acc);
-              return FilterChip(
-                label: Text(acc),
-                selected: selected,
-                onSelected: (s) => viewModel.toggleAccreditation(acc, s),
-              );
-            }).toList(),
-          ),
-          const SizedBox(height: 12),
-
-          // PDF Upload
-          Row(
-            children: [
-              ElevatedButton.icon(
-                onPressed: () => viewModel.pickPdf(),
-                icon: const Icon(Icons.picture_as_pdf),
-                label: const Text('Upload Registration (PDF)'),
-              ),
-              const SizedBox(width: 12),
-              if (viewModel.registrationPdfPath != null)
-                Expanded(
-                  child: Text(
-                    viewModel.registrationPdfPath!.split('/').last,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-            ],
-          ),
-          const SizedBox(height: 12),
-
-          // Location (if not embedded in hospital show location fields)
-          if (!embeddedInHospital) ...[
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Location (Street Address)',
-                border: OutlineInputBorder(),
-              ),
-              onChanged: (v) => viewModel.updateField('location', v),
-            ),
-            const SizedBox(height: 12),
-            Row(
+        )
+            : null,
+        child: Form(
+          key: viewModel.formKey,
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Expanded(
-                  child: TextFormField(
-                    decoration: const InputDecoration(
-                      labelText: 'City',
-                      border: OutlineInputBorder(),
+                if (!embeddedInHospital) ...[
+                  // Header Section
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Colors.red.shade700, Colors.red.shade500],
+                      ),
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.red.withOpacity(0.3),
+                          blurRadius: 8,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
                     ),
-                    onChanged: (v) => viewModel.updateField('city', v),
+                    child: Column(
+                      children: [
+                        Icon(
+                          Icons.water_drop,
+                          size: 40,
+                          color: Colors.white,
+                        ),
+                        const SizedBox(height: 12),
+                        const Text(
+                          'Blood Bank Registration',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        const Text(
+                          'Provide quality blood services',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.white70,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 28),
+                ],
+
+                // Profile Photo Section
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.red.shade200,
+                      width: 2,
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                    color: Colors.red.shade50,
+                  ),
+                  child: Column(
+                    children: [
+                      if (viewModel.profileImagePath == null)
+                        Icon(
+                          Icons.image_outlined,
+                          size: 50,
+                          color: Colors.red.shade300,
+                        )
+                      else
+                        SizedBox(
+                          height: 120,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: Image.file(
+                              File(viewModel.profileImagePath!),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      const SizedBox(height: 12),
+                      ElevatedButton.icon(
+                        onPressed: () => viewModel.pickProfileImage(),
+                        icon: const Icon(Icons.photo_camera),
+                        label: const Text('Upload Blood Bank Photo'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red.shade600,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                      if (viewModel.profileImagePath != null) ...[
+                        const SizedBox(height: 8),
+                        Text(
+                          viewModel.profileImagePath!.split('/').last,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.red.shade600,
+                          ),
+                        ),
+                      ],
+                    ],
                   ),
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: TextFormField(
-                    decoration: const InputDecoration(
-                      labelText: 'State / Province',
-                      border: OutlineInputBorder(),
-                    ),
-                    onChanged: (v) => viewModel.updateField('stateProvince', v),
+                const SizedBox(height: 24),
+
+                // Basic Information Section
+                _buildSectionHeader('Basic Information'),
+                const SizedBox(height: 12),
+                if (!embeddedInHospital) ...[
+                  _buildTextField(
+                    'Blood Bank Name',
+                        (v) => viewModel.updateField('name', v),
+                  ),
+                  const SizedBox(height: 12),
+                ],
+                _buildTextField(
+                  'Parent Organization (if any)',
+                      (v) => viewModel.updateField('parentOrganization', v),
+                ),
+                const SizedBox(height: 12),
+                _buildTextField(
+                  'License / Registration Number',
+                      (v) => viewModel.updateField('licenseNumber', v),
+                ),
+                const SizedBox(height: 24),
+
+                // Accreditations Section
+                _buildSectionHeader('Accreditations'),
+                const SizedBox(height: 12),
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.red.shade200),
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.red.shade50,
+                  ),
+                  child: Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: availableAccreditations.map((acc) {
+                      final selected = viewModel.accreditations.contains(acc);
+                      return FilterChip(
+                        label: Text(acc),
+                        selected: selected,
+                        onSelected: (s) =>
+                            viewModel.toggleAccreditation(acc, s),
+                        selectedColor: Colors.red.shade600,
+                        checkmarkColor: Colors.white,
+                        labelStyle: TextStyle(
+                          color: selected ? Colors.white : Colors.black,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        side: BorderSide(
+                          color: selected
+                              ? Colors.red.shade600
+                              : Colors.red.shade300,
+                        ),
+                      );
+                    }).toList(),
                   ),
                 ),
+                const SizedBox(height: 24),
+
+                // Registration Document Section
+                _buildSectionHeader('Registration Document'),
+                const SizedBox(height: 12),
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.amber.shade200,
+                      width: 2,
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                    color: Colors.amber.shade50,
+                  ),
+                  child: Column(
+                    children: [
+                      Icon(
+                        Icons.picture_as_pdf,
+                        size: 40,
+                        color: Colors.amber.shade600,
+                      ),
+                      const SizedBox(height: 12),
+                      ElevatedButton.icon(
+                        onPressed: () => viewModel.pickPdf(),
+                        icon: const Icon(Icons.upload_file),
+                        label: const Text('Upload Registration PDF'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.amber.shade600,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                      if (viewModel.registrationPdfPath != null) ...[
+                        const SizedBox(height: 12),
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(color: Colors.amber.shade200),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.description,
+                                color: Colors.amber.shade600,
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Text(
+                                  viewModel.registrationPdfPath!
+                                      .split('/')
+                                      .last,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.amber.shade700,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 24),
+
+                // Location Section (if not embedded)
+                if (!embeddedInHospital) ...[
+                  _buildSectionHeader('Location Information'),
+                  const SizedBox(height: 12),
+                  _buildTextField(
+                    'Street Address',
+                        (v) => viewModel.updateField('location', v),
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _buildTextField(
+                          'City',
+                              (v) => viewModel.updateField('city', v),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: _buildTextField(
+                          'State / Province',
+                              (v) => viewModel.updateField('stateProvince', v),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _buildTextField(
+                          'Pincode',
+                              (v) => viewModel.updateField('pincode', v),
+                          keyboardType: TextInputType.number,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      ElevatedButton.icon(
+                        onPressed: () => viewModel.useDeviceLocation(),
+                        icon: const Icon(Icons.my_location),
+                        label: const Text('Get Location'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.teal.shade600,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                ],
+
+                // Contact Information Section
+                _buildSectionHeader('Contact Information'),
+                const SizedBox(height: 12),
+                _buildTextField(
+                  'Contact Number',
+                      (v) => viewModel.updateField('contactNumber', v),
+                  keyboardType: TextInputType.phone,
+                ),
+                const SizedBox(height: 12),
+                _buildTextField(
+                  '24/7 Contact Number (if any)',
+                      (v) => viewModel.updateField('contact24x7', v),
+                  keyboardType: TextInputType.phone,
+                ),
+                const SizedBox(height: 12),
+                _buildTextField(
+                  'Email Address',
+                      (v) => viewModel.updateField('email', v),
+                  keyboardType: TextInputType.emailAddress,
+                ),
+                const SizedBox(height: 12),
+                _buildTextField(
+                  'Operating Hours (e.g., 09:00-18:00)',
+                      (v) => viewModel.updateField('operatingHours', v),
+                ),
+                const SizedBox(height: 24),
+
+                // Services Section
+                _buildSectionHeader('Services Offered'),
+                const SizedBox(height: 12),
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.green.shade200),
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.green.shade50,
+                  ),
+                  child: Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: availableServices.map((s) {
+                      final selected = viewModel.services.contains(s);
+                      return FilterChip(
+                        label: Text(s),
+                        selected: selected,
+                        onSelected: (sel) =>
+                            viewModel.toggleService(s, sel),
+                        selectedColor: Colors.green.shade600,
+                        checkmarkColor: Colors.white,
+                        labelStyle: TextStyle(
+                          color: selected ? Colors.white : Colors.black,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        side: BorderSide(
+                          color: selected
+                              ? Colors.green.shade600
+                              : Colors.green.shade300,
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+                const SizedBox(height: 24),
+
+                // Additional Options Section
+                _buildSectionHeader('Additional Information'),
+                const SizedBox(height: 12),
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.blue.shade200),
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.blue.shade50,
+                  ),
+                  child: SwitchListTile(
+                    title: const Text(
+                      'Do you organize donation camps?',
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                    value: viewModel.organizesDonationCamp,
+                    onChanged: (v) => viewModel.setOrganizesDonationCamp(v),
+                    activeColor: Colors.blue.shade600,
+                    activeTrackColor: Colors.blue.shade200,
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                _buildTextField(
+                  'Service Area (comma separated)',
+                      (v) => viewModel.updateField('serviceArea', v),
+                ),
+                const SizedBox(height: 28),
+
+                // Register Button
+                if (!embeddedInHospital)
+                  ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red.shade600,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: const Text(
+                      'Register Blood Bank',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                const SizedBox(height: 16),
               ],
             ),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    controller: TextEditingController(text: viewModel.pincode),
-                    decoration: const InputDecoration(
-                      labelText: 'Pincode',
-                      border: OutlineInputBorder(),
-                    ),
-                    keyboardType: TextInputType.number,
-                    onChanged: (v) => viewModel.updateField('pincode', v),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                ElevatedButton(
-                  onPressed: () {
-                    viewModel.useDeviceLocation();
-                  },
-                  child: const Text('Find Coordinates'),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-          ],
-
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Contact Number',
-              border: OutlineInputBorder(),
-            ),
-            onChanged: (v) => viewModel.updateField('contactNumber', v),
-            keyboardType: TextInputType.phone,
           ),
-          const SizedBox(height: 12),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: '24/7 Contact Number (if any)',
-              border: OutlineInputBorder(),
-            ),
-            onChanged: (v) => viewModel.updateField('contact24x7', v),
-            keyboardType: TextInputType.phone,
-          ),
-          const SizedBox(height: 12),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Email Address',
-              border: OutlineInputBorder(),
-            ),
-            onChanged: (v) => viewModel.updateField('email', v),
-            keyboardType: TextInputType.emailAddress,
-          ),
-          const SizedBox(height: 12),
-
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Operating Hours (e.g., 09:00-18:00)',
-              border: OutlineInputBorder(),
-            ),
-            onChanged: (v) => viewModel.updateField('operatingHours', v),
-          ),
-          const SizedBox(height: 12),
-
-          const Text(
-            'Services Offered',
-            style: TextStyle(fontWeight: FontWeight.w600),
-          ),
-          Wrap(
-            spacing: 8,
-            children: availableServices.map((s) {
-              final selected = viewModel.services.contains(s);
-              return FilterChip(
-                label: Text(s),
-                selected: selected,
-                onSelected: (sel) => viewModel.toggleService(s, sel),
-              );
-            }).toList(),
-          ),
-          const SizedBox(height: 12),
-
-          SwitchListTile(
-            title: const Text('Do you organize donation camps?'),
-            value: viewModel.organizesDonationCamp,
-            onChanged: (v) {
-              viewModel.setOrganizesDonationCamp(v);
-            },
-          ),
-          const SizedBox(height: 12),
-
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Service Area (comma separated)',
-              border: OutlineInputBorder(),
-            ),
-            onChanged: (v) => viewModel.updateField('serviceArea', v),
-          ),
-          const SizedBox(height: 16),
-
-          ElevatedButton(
-            onPressed: () {},
-            child: const Padding(
-              padding: EdgeInsets.symmetric(vertical: 12.0),
-              child: Text('Register Blood Bank'),
-            ),
-          ),
-        ],
+        ),
       ),
+    );
+  }
+
+  Widget _buildSectionHeader(String title) {
+    return Container(
+      padding: const EdgeInsets.only(bottom: 12),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: Colors.red.shade300,
+            width: 2,
+          ),
+        ),
+      ),
+      child: Text(
+        title,
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: Colors.red.shade700,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextField(
+      String label,
+      Function(String) onChanged, {
+        TextInputType keyboardType = TextInputType.text,
+      }) {
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText: label,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: Colors.red.shade200),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: Colors.red.shade200, width: 1.5),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: Colors.red.shade600, width: 2),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+        labelStyle: TextStyle(color: Colors.red.shade600),
+      ),
+      keyboardType: keyboardType,
+      onChanged: onChanged,
     );
   }
 }
