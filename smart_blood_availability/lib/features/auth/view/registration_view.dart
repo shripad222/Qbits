@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_blood_availability/features/auth/viewmodel/registration_viewmodel.dart';
-import '../../../pages/hospital.dart';
 import 'donor_registration_form.dart';
-// Import other forms (to be created later)
-// import 'hospital_registration_form.dart';
-// import 'blood_bank_registration_form.dart';
+// Import other forms
+import 'hospital_registration_form.dart';
+import 'blood_bank_registration_form.dart';
 
 class RegistrationView extends ConsumerWidget {
   const RegistrationView({super.key});
@@ -26,15 +25,17 @@ class RegistrationView extends ConsumerWidget {
             const SizedBox(height: 32),
 
             // Dynamic Form Display (UI/UX Mandate) [cite: 11]
-            _buildCurrentForm(selectedRole, context),
+            _buildCurrentForm(selectedRole),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildRoleSelector(UserRole selectedRole,
-      RegistrationViewModel viewModel) {
+  Widget _buildRoleSelector(
+    UserRole selectedRole,
+    RegistrationViewModel viewModel,
+  ) {
     return Container(
       padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
@@ -67,24 +68,14 @@ class RegistrationView extends ConsumerWidget {
     );
   }
 
-  Widget _buildCurrentForm(UserRole role, BuildContext context) {
+  Widget _buildCurrentForm(UserRole role) {
     switch (role) {
       case UserRole.donor:
-        return const DonorRegistrationForm();
+        return const DonorRegistrationForm(); // Default View [cite: 10]
       case UserRole.hospital:
-        return Center(
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const Hospital()),
-              );
-            },
-            child: const Text('Go to Hospital Page'),
-          ),
-        );
+        return const HospitalRegistrationForm();
       case UserRole.bloodBank:
-        return const Center(child: Text("Blood Bank Form Goes Here"));
+        return const BloodBankRegistrationForm();
     }
   }
 }

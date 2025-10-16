@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'donor_form_viewmodel.dart';
+part of 'blood_bank_form_viewmodel.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -9,28 +9,28 @@ part of 'donor_form_viewmodel.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(DonorFormViewModel)
-const donorFormViewModelProvider = DonorFormViewModelProvider._();
+@ProviderFor(BloodBankFormViewModel)
+const bloodBankFormViewModelProvider = BloodBankFormViewModelProvider._();
 
-final class DonorFormViewModelProvider
-    extends $NotifierProvider<DonorFormViewModel, AsyncValue<void>> {
-  const DonorFormViewModelProvider._()
+final class BloodBankFormViewModelProvider
+    extends $NotifierProvider<BloodBankFormViewModel, AsyncValue<void>> {
+  const BloodBankFormViewModelProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'donorFormViewModelProvider',
+        name: r'bloodBankFormViewModelProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$donorFormViewModelHash();
+  String debugGetCreateSourceHash() => _$bloodBankFormViewModelHash();
 
   @$internal
   @override
-  DonorFormViewModel create() => DonorFormViewModel();
+  BloodBankFormViewModel create() => BloodBankFormViewModel();
 
   /// {@macro riverpod.override_with_value}
   Override overrideWithValue(AsyncValue<void> value) {
@@ -41,10 +41,10 @@ final class DonorFormViewModelProvider
   }
 }
 
-String _$donorFormViewModelHash() =>
-    r'044d069e9b0da2fa05c492b5963e28f161d1ae91';
+String _$bloodBankFormViewModelHash() =>
+    r'816a242ca6aba70252a3e8b5bbfa90e7ba11e8d7';
 
-abstract class _$DonorFormViewModel extends $Notifier<AsyncValue<void>> {
+abstract class _$BloodBankFormViewModel extends $Notifier<AsyncValue<void>> {
   AsyncValue<void> build();
   @$mustCallSuper
   @override

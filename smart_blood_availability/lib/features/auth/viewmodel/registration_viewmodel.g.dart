@@ -6,22 +6,59 @@ part of 'registration_viewmodel.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+
+@ProviderFor(RegistrationViewModel)
+const registrationViewModelProvider = RegistrationViewModelProvider._();
+
+final class RegistrationViewModelProvider
+    extends $NotifierProvider<RegistrationViewModel, UserRole> {
+  const RegistrationViewModelProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'registrationViewModelProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$registrationViewModelHash();
+
+  @$internal
+  @override
+  RegistrationViewModel create() => RegistrationViewModel();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(UserRole value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<UserRole>(value),
+    );
+  }
+}
+
 String _$registrationViewModelHash() =>
     r'3419e7bd7441090ac2a792bdad7a4ace2d759c1f';
 
-/// See also [RegistrationViewModel].
-@ProviderFor(RegistrationViewModel)
-final registrationViewModelProvider =
-    AutoDisposeNotifierProvider<RegistrationViewModel, UserRole>.internal(
-      RegistrationViewModel.new,
-      name: r'registrationViewModelProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$registrationViewModelHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
-
-typedef _$RegistrationViewModel = AutoDisposeNotifier<UserRole>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+abstract class _$RegistrationViewModel extends $Notifier<UserRole> {
+  UserRole build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<UserRole, UserRole>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<UserRole, UserRole>,
+              UserRole,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
