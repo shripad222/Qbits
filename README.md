@@ -1,9 +1,4 @@
-Here’s a **detailed README** for your **Blood Bank Management System** built with **Flutter + Supabase**, written entirely in **Markdown** (for GitHub or any documentation site).
-It’s modular, clean, and ready to paste directly into your repo.
 
----
-
-```markdown
 # 🩸 Blood Bank Management System
 
 A **Flutter + Supabase** application designed to digitalize and streamline the process of **blood donation, request, and management** between **donors**, **hospitals**, and **blood banks**.  
