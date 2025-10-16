@@ -49,6 +49,11 @@ class DonorFormViewModel extends _$DonorFormViewModel {
 
   Map<String, bool> get healthScreening => _healthScreening;
 
+  List<String> get selectedHealthIssues => _healthScreening.entries
+      .where((e) => e.value)
+      .map((e) => e.key)
+      .toList();
+
   /// Pick profile image
   Future<void> pickImage() async {
     final result = await FilePicker.platform.pickFiles(type: FileType.image);
@@ -193,7 +198,7 @@ class DonorFormViewModel extends _$DonorFormViewModel {
 
   void updateHealthScreening(String questionKey, bool value) {
     _healthScreening[questionKey] = value;
-    state = const AsyncData(null);
+    state = const AsyncData(null); // This line triggers the rebuild
   }
 
   /// The main logic for submitting the Donor form data.

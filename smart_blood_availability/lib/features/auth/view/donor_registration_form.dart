@@ -5,12 +5,18 @@ import 'package:smart_blood_availability/shared/widgets/app_dropdown.dart';
 import 'dart:io';
 
 import '../../../pages/Donor.dart';
-
-class DonorRegistrationForm extends ConsumerWidget {
+class DonorRegistrationForm extends ConsumerStatefulWidget {
   const DonorRegistrationForm({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<DonorRegistrationForm> createState() => _DonorRegistrationFormState();
+}
+
+class _DonorRegistrationFormState extends ConsumerState<DonorRegistrationForm> {
+
+
+  @override
+  Widget build(BuildContext context) {
     final viewModel = ref.watch(donorFormViewModelProvider.notifier);
     final state = ref.watch(donorFormViewModelProvider);
 
@@ -196,10 +202,6 @@ class DonorRegistrationForm extends ConsumerWidget {
                 Row(
                   children: [
                     Expanded(
-                      // child: _buildBloodGroupDropdown(
-                      //   bloodGroups,
-                      //       (val) => viewModel.updateField('bloodGroup', val),
-                      // ),
                       child: _buildBloodGroupDropdown(bloodGroups, (val) {
                         if (val != null)
                           viewModel.updateField('bloodGroup', val);
@@ -322,31 +324,13 @@ class DonorRegistrationForm extends ConsumerWidget {
                 // Health Screening Section
                 _buildSectionHeader('Health Screening'),
                 const SizedBox(height: 12),
-                _buildHealthCheckbox(
-                  'chronic_conditions',
-                  'Any chronic medical conditions? (e.g., diabetes, hypertension)',
-                  viewModel,
-                ),
-                _buildHealthCheckbox(
-                  'on_regular_medication',
-                  'Currently on regular medication?',
-                  viewModel,
-                ),
-                _buildHealthCheckbox(
-                  'history_of_transfusion',
-                  'Ever received a blood transfusion?',
-                  viewModel,
-                ),
-                _buildHealthCheckbox(
-                  'chronic_infectious_disease',
-                  'Any chronic infectious disease? (e.g., hepatitis, HIV)',
-                  viewModel,
-                ),
-                _buildHealthCheckbox(
-                  'major_surgery_history',
-                  'Had major surgery in the past year?',
-                  viewModel,
-                ),
+                _buildHealthCheckbox('chronic_conditions', 'Any chronic medical conditions? (e.g., diabetes, hypertension)'),
+                _buildHealthCheckbox('on_regular_medication', 'Currently on regular medication?'),
+                _buildHealthCheckbox('history_of_transfusion', 'Ever received a blood transfusion?'),
+                _buildHealthCheckbox('chronic_infectious_disease', 'Any chronic infectious disease? (e.g., hepatitis, HIV)'),
+                _buildHealthCheckbox('major_surgery_history', 'Had major surgery in the past year?'),
+
+
                 const SizedBox(height: 28),
 
                 // Submit Button
@@ -521,22 +505,32 @@ class DonorRegistrationForm extends ConsumerWidget {
       onChanged: onChanged, // now matches ValueChanged<String?>
     );
   }
-
-  Widget _buildHealthCheckbox(String key, String label, dynamic viewModel) {
+  Widget _buildHealthCheckbox(String key, String label) {
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: Colors.red.shade100),
       ),
-      child: CheckboxListTile(
-        value: viewModel.healthScreening[key] ?? false,
-        onChanged: (v) => viewModel.updateHealthScreening(key, v ?? false),
-        activeColor: Colors.red.shade600,
-        title: Text(label, style: const TextStyle(fontSize: 14)),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      child: StatefulBuilder(
+        builder: (context, setState) {
+          final viewModel = ref.read(donorFormViewModelProvider.notifier);
+          final checked = viewModel.healthScreening[key] ?? false;
+
+          return CheckboxListTile(
+            value: checked,
+            onChanged: (v) {
+              viewModel.updateHealthScreening(key, v ?? false);
+              setState(() {}); // Force local rebuild
+            },
+            activeColor: Colors.red.shade600,
+            title: Text(label, style: const TextStyle(fontSize: 14)),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          );
+        },
       ),
     );
   }
+
 }
