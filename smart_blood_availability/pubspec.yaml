@@ -30,6 +30,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+    # State Management
+  flutter_riverpod: ^2.5.1 # Main Riverpod package for widgets
+  riverpod_annotation: ^2.3.5 # For using @riverpod annotations
+
+  # Backend Integration
+  supabase_flutter: ^2.5.0 # Official Supabase client for Flutter
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -45,6 +51,9 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
+  # Riverpod Code Generation
+  build_runner: ^2.4.8 # The command line tool that runs code generators
+  riverpod_generator: ^2.4.5 # Generates the .g.dart files for providers
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
