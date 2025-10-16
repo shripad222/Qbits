@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:smart_blood_availability/components/CustomCard.dart';
-
 import '../components/notification_card.dart';
 import '../components/notification_item.dart';
+import 'blood_bank_map.dart';
 
 class Donor extends StatefulWidget {
   const Donor({super.key});
@@ -59,8 +59,6 @@ class _LandingPageState extends State<LandingPage> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
       appBar: AppBar(
@@ -77,21 +75,22 @@ class _LandingPageState extends State<LandingPage> {
                 onPressed: () {},
                 icon: const Icon(Icons.notifications_outlined, color: Colors.black87),
               ),
-              Positioned(
-                right: 8,
-                top: 8,
-                child: Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: const BoxDecoration(
-                    color: Colors.red,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Text(
-                    "${notifications.length}",
-                    style: const TextStyle(color: Colors.white, fontSize: 10),
+              if (notifications.isNotEmpty)
+                Positioned(
+                  right: 8,
+                  top: 8,
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: const BoxDecoration(
+                      color: Colors.red,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Text(
+                      "${notifications.length}",
+                      style: const TextStyle(color: Colors.white, fontSize: 10),
+                    ),
                   ),
                 ),
-              ),
             ],
           ),
           IconButton(
@@ -109,7 +108,6 @@ class _LandingPageState extends State<LandingPage> {
             const SizedBox(height: 20),
             _buildQuickActions(),
             const SizedBox(height: 20),
-            // _buildNotificationsSection(),
             NotificationList(
               notifications: notifications,
               onAction: _handleNotificationAction,
@@ -228,60 +226,97 @@ class _LandingPageState extends State<LandingPage> {
         const SizedBox(height: 12),
         Row(
           children: [
-            Expanded(child: _buildActionCard("Schedule", Icons.calendar_today, Colors.blue)),
+            Expanded(
+              child: GlassCard(
+                margin: EdgeInsets.zero,
+                onTap: () {
+                  // Navigate to Camps screen (if implemented)
+                },
+                child: _buildActionContent("Camps", Icons.campaign, Colors.blue),
+              ),
+            ),
             const SizedBox(width: 12),
-            Expanded(child: _buildActionCard("Find Center", Icons.location_on, Colors.green)),
+            Expanded(
+              child: GlassCard(
+                margin: EdgeInsets.zero,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const BloodBankMap(
+                        area: "Goa",
+                        amenityType: "blood_bank",
+                      ),
+                    ),
+                  );
+                },
+                child: _buildActionContent("Find Blood Banks", Icons.location_on, Colors.green),
+              ),
+            ),
           ],
         ),
         const SizedBox(height: 12),
         Row(
           children: [
-            Expanded(child: _buildActionCard("History", Icons.history, Colors.orange)),
+            Expanded(
+              child: GlassCard(
+                margin: EdgeInsets.zero,
+                onTap: () {
+                  // Navigate to History screen
+                },
+                child: _buildActionContent("History", Icons.history, Colors.orange),
+              ),
+            ),
             const SizedBox(width: 12),
-            Expanded(child: _buildActionCard("Certificates", Icons.card_giftcard, Colors.purple)),
+            Expanded(
+              child: GlassCard(
+                margin: EdgeInsets.zero,
+                onTap: () {
+                  // Navigate to Certificates screen
+                },
+                child: _buildActionContent("Certificates", Icons.card_giftcard, Colors.purple),
+              ),
+            ),
           ],
         ),
       ],
     );
   }
 
-  Widget _buildActionCard(String label, IconData icon, Color color) {
-    return GlassCard(
-      margin: EdgeInsets.zero,
-      onTap: () {},
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20),
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: color.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Icon(icon, color: color, size: 28),
+  Widget _buildActionContent(String label, IconData icon, Color color) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
             ),
-            const SizedBox(height: 8),
-            Text(
-              label,
-              style: const TextStyle(fontWeight: FontWeight.w600),
-            ),
-          ],
-        ),
+            child: Icon(icon, color: color, size: 28),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            label,
+            style: const TextStyle(fontWeight: FontWeight.w600),
+          ),
+        ],
       ),
     );
   }
 
   void _handleNotificationAction(NotificationItem n, bool accepted) {
     setState(() => notifications.remove(n));
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(accepted ? "Request accepted" : "Request declined"),
-      backgroundColor: accepted ? Colors.green : Colors.red,
-    ));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(accepted ? "Request accepted" : "Request declined"),
+        backgroundColor: accepted ? Colors.green : Colors.red,
+      ),
+    );
   }
 
   void _dismissNotification(NotificationItem n) {
     setState(() => notifications.remove(n));
   }
-
 }

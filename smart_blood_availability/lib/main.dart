@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_blood_availability/core/services/supabase_service.dart';
-import 'package:smart_blood_availability/features/auth/view/registration_view.dart';
 import 'package:smart_blood_availability/pages/Donor.dart';
-import 'package:smart_blood_availability/pages/hospital.dart';
 
 void main() async {
   // 1. Ensure Flutter bindings are initialized before calling native methods

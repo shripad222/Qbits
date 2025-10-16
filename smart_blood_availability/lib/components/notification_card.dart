@@ -1,5 +1,3 @@
-// lib/components/notifications/notification_card.dart
-
 import 'package:flutter/material.dart';
 import 'package:smart_blood_availability/components/CustomCard.dart';
 import 'notification_item.dart';

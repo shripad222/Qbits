@@ -1,6 +1,3 @@
-// lib/components/notifications/notification_item.dart
-
-import 'package:flutter/material.dart';
 
 enum NotificationType { request, reminder, alert, info }
 enum Priority { high, medium, low }
