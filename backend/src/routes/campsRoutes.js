@@ -1,0 +1,30 @@
+import express from "express";
+import { supabase } from "../supabaseClient.js";
+
+const router = express.Router();
+
+router.post("/add-camp", async (req, res) => {
+  try {
+    const { organiser, location, time } = req.body;
+
+    // Insert into Supabase table
+    const { data, error } = await supabase
+      .from("camps")
+      .insert([
+        {
+          organiser,
+          location: location, // same structure as before
+          time,
+        },
+      ]);
+
+    if (error) throw error;
+
+    res.json({ success: true, camp: data[0] });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+export default router;
