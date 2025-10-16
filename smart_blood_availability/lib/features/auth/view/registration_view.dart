@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_blood_availability/features/auth/viewmodel/registration_viewmodel.dart';
+import '../../../pages/hospital.dart';
 import 'donor_registration_form.dart';
 // Import other forms (to be created later)
 // import 'hospital_registration_form.dart';
@@ -25,14 +26,15 @@ class RegistrationView extends ConsumerWidget {
             const SizedBox(height: 32),
 
             // Dynamic Form Display (UI/UX Mandate) [cite: 11]
-            _buildCurrentForm(selectedRole),
+            _buildCurrentForm(selectedRole, context),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildRoleSelector(UserRole selectedRole, RegistrationViewModel viewModel) {
+  Widget _buildRoleSelector(UserRole selectedRole,
+      RegistrationViewModel viewModel) {
     return Container(
       padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
@@ -65,15 +67,23 @@ class RegistrationView extends ConsumerWidget {
     );
   }
 
-  Widget _buildCurrentForm(UserRole role) {
+  Widget _buildCurrentForm(UserRole role, BuildContext context) {
     switch (role) {
       case UserRole.donor:
-        return const DonorRegistrationForm(); // Default View [cite: 10]
+        return const DonorRegistrationForm();
       case UserRole.hospital:
-        // return const HospitalRegistrationForm(); // To be implemented
-        return const Center(child: Text("Hospital Form Goes Here"));
+        return Center(
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const Hospital()),
+              );
+            },
+            child: const Text('Go to Hospital Page'),
+          ),
+        );
       case UserRole.bloodBank:
-        // return const BloodBankRegistrationForm(); // To be implemented
         return const Center(child: Text("Blood Bank Form Goes Here"));
     }
   }
