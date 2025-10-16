@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_blood_availability/features/auth/viewmodel/registration_viewmodel.dart';
 import 'donor_registration_form.dart';
-// Import other forms (to be created later)
-// import 'hospital_registration_form.dart';
-// import 'blood_bank_registration_form.dart';
+// Import other forms
+import 'hospital_registration_form.dart';
+import 'blood_bank_registration_form.dart';
 
 class RegistrationView extends ConsumerWidget {
   const RegistrationView({super.key});
@@ -32,7 +32,10 @@ class RegistrationView extends ConsumerWidget {
     );
   }
 
-  Widget _buildRoleSelector(UserRole selectedRole, RegistrationViewModel viewModel) {
+  Widget _buildRoleSelector(
+    UserRole selectedRole,
+    RegistrationViewModel viewModel,
+  ) {
     return Container(
       padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
@@ -70,11 +73,9 @@ class RegistrationView extends ConsumerWidget {
       case UserRole.donor:
         return const DonorRegistrationForm(); // Default View [cite: 10]
       case UserRole.hospital:
-        // return const HospitalRegistrationForm(); // To be implemented
-        return const Center(child: Text("Hospital Form Goes Here"));
+        return const HospitalRegistrationForm();
       case UserRole.bloodBank:
-        // return const BloodBankRegistrationForm(); // To be implemented
-        return const Center(child: Text("Blood Bank Form Goes Here"));
+        return const BloodBankRegistrationForm();
     }
   }
 }
