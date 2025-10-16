@@ -45,6 +45,8 @@ dependencies:
   geolocator: ^9.0.2
   open_file: ^3.2.1
 
+  syncfusion_flutter_maps: ^24.2.9
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
