@@ -20,6 +20,13 @@ app.use('/', notificationRoutes)
 app.use('/', campRoutes)
 app.use('/', whatsappRoutes)
 
+// server.js (or in a new routes file)
+app.get('/api/test', (req, res) => {
+  res.json({ success: true, message: 'Express is working!' });
+});
+
+
 app.listen(PORT, () => {
   console.log(`Server is listening on http://localhost:${PORT}`)
 })
+
