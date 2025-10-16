@@ -13,7 +13,7 @@ part of 'blood_bank_form_viewmodel.dart';
 const bloodBankFormViewModelProvider = BloodBankFormViewModelProvider._();
 
 final class BloodBankFormViewModelProvider
-    extends $NotifierProvider<BloodBankFormViewModel, AsyncValue<void>> {
+    extends $NotifierProvider<BloodBankFormViewModel, BloodBankFormState> {
   const BloodBankFormViewModelProvider._()
     : super(
         from: null,
@@ -33,29 +33,29 @@ final class BloodBankFormViewModelProvider
   BloodBankFormViewModel create() => BloodBankFormViewModel();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(AsyncValue<void> value) {
+  Override overrideWithValue(BloodBankFormState value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<AsyncValue<void>>(value),
+      providerOverride: $SyncValueProvider<BloodBankFormState>(value),
     );
   }
 }
 
 String _$bloodBankFormViewModelHash() =>
-    r'816a242ca6aba70252a3e8b5bbfa90e7ba11e8d7';
+    r'5780df7e025368fdbb19920d5d135b18eadb1bca';
 
-abstract class _$BloodBankFormViewModel extends $Notifier<AsyncValue<void>> {
-  AsyncValue<void> build();
+abstract class _$BloodBankFormViewModel extends $Notifier<BloodBankFormState> {
+  BloodBankFormState build();
   @$mustCallSuper
   @override
   void runBuild() {
     final created = build();
-    final ref = this.ref as $Ref<AsyncValue<void>, AsyncValue<void>>;
+    final ref = this.ref as $Ref<BloodBankFormState, BloodBankFormState>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<AsyncValue<void>, AsyncValue<void>>,
-              AsyncValue<void>,
+              AnyNotifier<BloodBankFormState, BloodBankFormState>,
+              BloodBankFormState,
               Object?,
               Object?
             >;

@@ -42,7 +42,7 @@ final class HospitalFormViewModelProvider
 }
 
 String _$hospitalFormViewModelHash() =>
-    r'8d2a416d950e9bb057ccbe4a9b8034cc539f4d2c';
+    r'c0e334a301b34bc0038709147209ec77a6e2ca2c';
 
 abstract class _$HospitalFormViewModel extends $Notifier<AsyncValue<bool>> {
   AsyncValue<bool> build();

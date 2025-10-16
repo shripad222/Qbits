@@ -42,7 +42,7 @@ final class DonorFormViewModelProvider
 }
 
 String _$donorFormViewModelHash() =>
-    r'044d069e9b0da2fa05c492b5963e28f161d1ae91';
+    r'1232a2c9ec39cab211cc63939dad3e8d812c6df6';
 
 abstract class _$DonorFormViewModel extends $Notifier<AsyncValue<void>> {
   AsyncValue<void> build();

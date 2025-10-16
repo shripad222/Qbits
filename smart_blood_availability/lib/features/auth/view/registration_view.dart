@@ -71,11 +71,11 @@ class RegistrationView extends ConsumerWidget {
   Widget _buildCurrentForm(UserRole role) {
     switch (role) {
       case UserRole.donor:
-        return const DonorRegistrationForm(); // Default View [cite: 10]
+        return  DonorRegistrationForm(); // Default View [cite: 10]
       case UserRole.hospital:
-        return const HospitalRegistrationForm();
+        return  HospitalRegistrationForm();
       case UserRole.bloodBank:
-        return const BloodBankRegistrationForm();
+        return  BloodBankRegistrationForm();
     }
   }
 }
