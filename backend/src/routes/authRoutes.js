@@ -25,6 +25,8 @@ router.post(
         internal_bb,
       } = req.body;
 
+      console.log("called the 2nd shit")
+
       // Upload scanned PDF
       let scannedUrl = null;
       if (req.files["scanned_copy"]) {
@@ -201,6 +203,8 @@ router.post(
         date_of_last_donation,
         live_location,
       } = req.body;
+
+      console.log("Called this shit")
 
       // Encrypt password
       const hashedPassword = await bcrypt.hash(password, 10);

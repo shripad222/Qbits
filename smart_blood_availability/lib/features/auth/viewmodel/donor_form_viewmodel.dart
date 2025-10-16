@@ -251,7 +251,7 @@ part 'donor_form_viewmodel.g.dart';
 @riverpod
 class DonorFormViewModel extends _$DonorFormViewModel {
   // Replace with your actual backend URL
-  static const String BACKEND_URL = 'http://10.246.223.176:3000';
+  static const String BACKEND_URL = 'http://10.79.215.198:3000';
 
   @override
   AsyncValue<void> build() => const AsyncData(null);
@@ -434,9 +434,10 @@ class DonorFormViewModel extends _$DonorFormViewModel {
   /// Submit donor registration to backend
   Future<void> submitDonorRegistration() async {
     try {
-      if (!formKey.currentState!.validate()) {
-        throw Exception('Please fill all required fields');
-      }
+
+      // if (!formKey.currentState!.validate()) {
+      //   throw Exception('Please fill all required fields');
+      // }
 
       state = const AsyncLoading();
 
