@@ -258,66 +258,145 @@ const BloodCampForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+//  const handleSubmit = async () => {
+//    if (!validateForm()) {
+//      setSubmitStatus({ type: 'error', message: 'Please fill in all required fields' });
+//      return;
+//    }
+//
+//    setSubmitStatus({ type: 'loading', message: 'Submitting...' });
+//
+//    try {
+//      const response = await fetch('http://10.79.215.218:3000/add-camp', {
+//        method: 'POST',
+//        headers: {
+//          'Content-Type': 'application/json',
+//        },
+//        body: JSON.stringify({
+//          ...formData,
+//          location: location,
+//          coordinates: {
+//            latitude: location.lat,
+//            longitude: location.lng
+//          }
+//        })
+//      });
+//
+//      if (!response.ok) {
+//        throw new Error('Failed to create camp');
+//      }
+//
+//      const data = await response.json();
+//      
+//      setSubmitStatus({ 
+//        type: 'success', 
+//        message: 'Blood donation camp registered successfully!' 
+//      });
+//
+//      setTimeout(() => {
+//        setFormData({
+//          organizationName: '',
+//          campDate: '',
+//          startTime: '',
+//          endTime: '',
+//          address: '',
+//          description: '',
+//          contactPerson: '',
+//          contactPhone: '',
+//          contactEmail: '',
+//          expectedDonors: ''
+//        });
+//        setLocation(null);
+//        setSubmitStatus(null);
+//      }, 2000);
+//
+//    } catch (error) {
+//      console.error('Error submitting form:', error);
+//      setSubmitStatus({ 
+//        type: 'error', 
+//        message: 'Failed to register camp. Please try again.' 
+//      });
+//    }
+//  };
+
   const handleSubmit = async () => {
-    if (!validateForm()) {
-      setSubmitStatus({ type: 'error', message: 'Please fill in all required fields' });
-      return;
-    }
+  if (!validateForm()) {
+    setSubmitStatus({ type: 'error', message: 'Please fill in all required fields' });
+    return;
+  }
 
-    setSubmitStatus({ type: 'loading', message: 'Submitting...' });
+  setSubmitStatus({ type: 'loading', message: 'Submitting...' });
 
-    try {
-      const response = await fetch('/api/camps/create', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...formData,
-          location: location,
-          coordinates: {
-            latitude: location.lat,
-            longitude: location.lng
-          }
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to create camp');
+  try {
+    // Transform data to match backend expectations
+    const campData = {
+      organiser: {
+        name: formData.organizationName,
+        description: formData.description,
+        contactPerson: formData.contactPerson,
+        contactPhone: formData.contactPhone,
+        contactEmail: formData.contactEmail,
+        expectedDonors: formData.expectedDonors ? parseInt(formData.expectedDonors) : null
+      },
+      location: {
+        address: formData.address,
+        coordinates: {
+          latitude: location.lat,
+          longitude: location.lng
+        }
+      },
+      time: {
+        date: formData.campDate,
+        startTime: formData.startTime,
+        endTime: formData.endTime
       }
+    };
 
-      const data = await response.json();
-      
-      setSubmitStatus({ 
-        type: 'success', 
-        message: 'Blood donation camp registered successfully!' 
-      });
+    const response = await fetch('http://10.79.215.218:3000/add-camp', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(campData)
+    });
 
-      setTimeout(() => {
-        setFormData({
-          organizationName: '',
-          campDate: '',
-          startTime: '',
-          endTime: '',
-          address: '',
-          description: '',
-          contactPerson: '',
-          contactPhone: '',
-          contactEmail: '',
-          expectedDonors: ''
-        });
-        setLocation(null);
-        setSubmitStatus(null);
-      }, 2000);
-
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      setSubmitStatus({ 
-        type: 'error', 
-        message: 'Failed to register camp. Please try again.' 
-      });
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Failed to create camp');
     }
-  };
+
+    const data = await response.json();
+    
+    setSubmitStatus({ 
+      type: 'success', 
+      message: 'Blood donation camp registered successfully!' 
+    });
+
+    setTimeout(() => {
+      setFormData({
+        organizationName: '',
+        campDate: '',
+        startTime: '',
+        endTime: '',
+        address: '',
+        description: '',
+        contactPerson: '',
+        contactPhone: '',
+        contactEmail: '',
+        expectedDonors: ''
+      });
+      setLocation(null);
+      setSubmitStatus(null);
+    }, 2000);
+
+  } catch (error) {
+    console.error('Error submitting form:', error);
+    setSubmitStatus({ 
+      type: 'error', 
+      message: error.message || 'Failed to register camp. Please try again.' 
+    });
+  }
+};
 
   const handleReset = () => {
     setFormData({

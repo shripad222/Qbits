@@ -1,0 +1,98 @@
+.registration-page {
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #f3f4f6, #ffffff);
+  padding: 20px;
+}
+
+.registration-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Toggle Section */
+.user-type-toggle {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 32px;
+  background: white;
+  padding: 8px;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.toggle-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 24px;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 16px;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.toggle-btn:hover {
+  background: #f9fafb;
+}
+
+.toggle-btn.active {
+  color: white;
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.toggle-btn.active.hospital {
+  background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+  border-color: #1d4ed8;
+}
+
+.toggle-btn.active.bloodbank {
+  background: linear-gradient(135deg, #b91c1c, #dc2626);
+  border-color: #b91c1c;
+}
+
+.toggle-btn svg {
+  transition: transform 0.3s ease;
+}
+
+.toggle-btn.active svg {
+  transform: scale(1.1);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .registration-page {
+    padding: 12px;
+  }
+
+  .user-type-toggle {
+    gap: 8px;
+    padding: 6px;
+  }
+
+  .toggle-btn {
+    padding: 12px 16px;
+    font-size: 14px;
+    gap: 8px;
+  }
+
+  .toggle-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .toggle-btn span {
+    display: none;
+  }
+
+  /* Show text on active button only */
+  .toggle-btn.active span {
+    display: inline;
+  }
+}

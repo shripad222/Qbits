@@ -59,24 +59,6 @@ class _CampMapState extends State<CampMap> {
     }
   }
 
-  // Future<void> _fetchCamps() async {
-  //   try {
-  //     final res = await http.get(Uri.parse('http://10.246.223.66:3000/api/camps/get-camps'));
-  //     if (res.statusCode == 200) {
-  //       final jsonResponse = jsonDecode(res.body);
-  //       final List<dynamic> campList = jsonResponse['camps'];
-  //       setState(() {
-  //         camps = campList.map((e) => Camp.fromJson(e)).toList();
-  //         isLoading = false;
-  //       });
-  //     } else {
-  //       throw Exception('Failed to load camps');
-  //     }
-  //   } catch (e) {
-  //     print('Error fetching camps: $e');
-  //     setState(() => isLoading = false);
-  //   }
-  // }
   @override
   Widget build(BuildContext context) {
     print('Building: isLoading=$isLoading, camps.length=${camps.length}');
@@ -140,62 +122,6 @@ class _CampMapState extends State<CampMap> {
       ),
     );
   }
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     appBar: AppBar(
-  //       title: const Text('Blood Donation Camps'),
-  //       backgroundColor: Colors.red.shade400,
-  //     ),
-  //     body: isLoading
-  //         ? const Center(child: CircularProgressIndicator())
-  //         : camps.isEmpty
-  //         ? const Center(child: Text('No camps found'))
-  //         : SfMaps(
-  //       layers: [
-  //         MapTileLayer(
-  //           urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-  //           initialZoomLevel: 10,
-  //           initialFocalLatLng: MapLatLng(
-  //             camps.isNotEmpty ? camps.first.latitude : 20.5937,
-  //             camps.isNotEmpty ? camps.first.longitude : 78.9629,
-  //           ),
-  //           initialMarkersCount: camps.length,
-  //           markerBuilder: (context, index) {
-  //             final camp = camps[index];
-  //             return MapMarker(
-  //               latitude: camp.latitude,
-  //               longitude: camp.longitude,
-  //               child: GestureDetector(
-  //                 onTap: () => _showCampDetails(camp),
-  //                 child: Container(
-  //                   padding: const EdgeInsets.all(8),
-  //                   decoration: BoxDecoration(
-  //                     color: Colors.red,
-  //                     shape: BoxShape.circle,
-  //                     boxShadow: [
-  //                       BoxShadow(
-  //                         color: Colors.red.withOpacity(0.5),
-  //                         blurRadius: 8,
-  //                         spreadRadius: 2,
-  //                       ),
-  //                     ],
-  //                   ),
-  //                   child: const Icon(
-  //                     Icons.location_on,
-  //                     color: Colors.white,
-  //                     size: 36,
-  //                   ),
-  //                 ),
-  //               ),
-  //             );
-  //           },
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
-  //
   void _showCampDetails(Camp camp) {
     showDialog(
       context: context,
@@ -217,6 +143,16 @@ class _CampMapState extends State<CampMap> {
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: const Text('Close'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              // Add registration logic here
+              Navigator.pop(context);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red.shade600,
+            ),
+            child: const Text('Register', style: TextStyle(color: Colors.white)),
           ),
         ],
       ),

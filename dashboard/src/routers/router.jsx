@@ -6,6 +6,8 @@ import BloodBankDashboard from '../features/bloodbank/components/BloodBankDashbo
 import BloodBankInfo from "../features/bloodbank/pages/BloodBankInfo.jsx";
 import HomePage from "../page/HomePage.jsx"
 import BloodCampForm from '../features/bloodbank/pages/BloodCampForm.jsx'
+import HospitalReg from '../page/auth/HospitalRegistration.jsx';
+import Registration from '../page/auth/Registration.jsx';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -34,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: "/bloodbank/camps",
         element: <BloodCampForm/>,
+      },
+      {
+        path: "/register",
+        element: <Registration />,
       },
     ],
   },

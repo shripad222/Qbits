@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_blood_availability/features/auth/viewmodel/registration_viewmodel.dart';
+import 'package:smart_blood_availability/pages/DonorAuthPage.dart';
 import 'donor_registration_form.dart';
 // Import other forms
 import 'hospital_registration_form.dart';
@@ -72,6 +73,7 @@ class RegistrationView extends ConsumerWidget {
     switch (role) {
       case UserRole.donor:
         return  DonorRegistrationForm(); // Default View [cite: 10]
+        // return DonorAuthPage();
       case UserRole.hospital:
         return  HospitalRegistrationForm();
       case UserRole.bloodBank:
