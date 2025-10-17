@@ -1,13 +1,13 @@
 //import React, { useState, useEffect } from 'react';
-//import { Search, MapPin, Droplet, Activity } from 'lucide-react';
-//import { BloodBankBriefInfoCard } from './BloodBankBreifInfoCard';
+//import { Search, MapPin, Droplet, Activity, Building2, X, Clock, Phone, Mail, ArrowUpRight } from 'lucide-react';
 //
 //const Button = ({ children, variant = "default", size = "default", className = "", ...props }) => {
 //  const baseStyles = "inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50";
 //  const variants = {
 //    default: "bg-red-600 text-white hover:bg-red-700",
-//    outline: "border border-gray-300 bg-white hover:bg-gray-50 text-gray-700",
-//    ghost: "hover:bg-gray-100 text-gray-700"
+//    outline: "border border-gray-300 bg-white hover:bg-gray-50 text-gray-900",
+//    ghost: "hover:bg-gray-100 text-gray-900",
+//    link: "text-red-600 underline-offset-4 hover:underline"
 //  };
 //  const sizes = {
 //    default: "h-10 px-4 py-2",
@@ -83,21 +83,122 @@
 //  </div>
 //);
 //
-//const Badge = ({ children, variant = "default" }) => {
+//const Badge = ({ children, variant = "default", className = "" }) => {
 //  const variants = {
 //    default: "bg-gray-100 text-gray-800",
 //    success: "bg-green-100 text-green-800",
 //    warning: "bg-amber-100 text-amber-800",
-//    danger: "bg-red-100 text-red-800"
+//    danger: "bg-red-100 text-red-800",
+//    blue: "bg-blue-100 text-blue-800"
 //  };
 //  
 //  return (
-//    <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${variants[variant]}`}>
+//    <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium ${variants[variant]} ${className}`}>
 //      {children}
 //    </span>
 //  );
 //};
 //
+//const Dialog = ({ open, onOpenChange, children }) => {
+//  if (!open) return null;
+//  
+//  return (
+//    <div className="fixed inset-0 z-50 flex items-center justify-center">
+//      <div 
+//        className="fixed inset-0 bg-black/50 backdrop-blur-sm"
+//        onClick={() => onOpenChange(false)}
+//      />
+//      <div className="relative z-50 w-full max-w-2xl mx-4">
+//        {children}
+//      </div>
+//    </div>
+//  );
+//};
+//
+//const DialogContent = ({ children, onClose }) => (
+//  <div className="bg-white rounded-lg shadow-xl overflow-hidden animate-in fade-in zoom-in duration-200">
+//    <button
+//      onClick={onClose}
+//      className="absolute right-4 top-4 rounded-sm opacity-70 hover:opacity-100 transition-opacity z-10"
+//    >
+//      <X className="h-5 w-5 text-gray-600" />
+//      <span className="sr-only">Close</span>
+//    </button>
+//    {children}
+//  </div>
+//);
+//
+//const BloodPopupCard = ({ bloodBank, onClose }) => {
+//  return (
+//    <div>
+//      <div className="relative h-48 bg-gradient-to-br from-red-50 to-red-100">
+//        <div className="absolute inset-0 flex items-center justify-center">
+//          {bloodBank.profile_img && bloodBank.profile_img !== '---' ? (
+//            <img 
+//              src={bloodBank.profile_img} 
+//              alt={bloodBank.name}
+//              className="w-full h-full object-cover"
+//            />
+//          ) : (
+//            <Building2 className="w-20 h-20 text-red-300" />
+//          )}
+//        </div>
+//      </div>
+//
+//      <div className="p-6 space-y-6">
+//        <div>
+//          <div className="flex items-start justify-between mb-2">
+//            <h2 className="text-2xl font-bold text-gray-900">{bloodBank.name || '---'}</h2>
+//            <Badge variant={(bloodBank.is_open === true || bloodBank.is_open === 'true') ? "success" : "danger"}>
+//              {(bloodBank.is_open === true || bloodBank.is_open === 'true') ? "Open Now" : "Closed"}
+//            </Badge>
+//          </div>
+//          <div className="flex items-center gap-2 text-gray-600">
+//            <MapPin className="w-4 h-4" />
+//            <p className="text-sm">{bloodBank.address || '---'}</p>
+//          </div>
+//        </div>
+//
+//        <div className="grid grid-cols-2 gap-4">
+//          <div className="space-y-1">
+//            <div className="flex items-center gap-2 text-gray-700">
+//              <Clock className="w-4 h-4 text-red-600" />
+//              <span className="text-sm font-medium">Working Hours</span>
+//            </div>
+//            <p className="text-sm text-gray-600 ml-6">{bloodBank.working_hours || '---'}</p>
+//          </div>
+//
+//          <div className="space-y-1">
+//            <div className="flex items-center gap-2 text-gray-700">
+//              <Phone className="w-4 h-4 text-red-600" />
+//              <span className="text-sm font-medium">Contact</span>
+//            </div>
+//            <p className="text-sm text-gray-600 ml-6">{bloodBank.phone || '---'}</p>
+//          </div>
+//
+//          {bloodBank.email && bloodBank.email !== '---' && (
+//            <div className="space-y-1 col-span-2">
+//              <div className="flex items-center gap-2 text-gray-700">
+//                <Mail className="w-4 h-4 text-red-600" />
+//                <span className="text-sm font-medium">Email</span>
+//              </div>
+//              <p className="text-sm text-gray-600 ml-6">{bloodBank.email}</p>
+//            </div>
+//          )}
+//        </div>
+//
+//        <div className="flex gap-3 pt-4 border-t">
+//          <Button className="flex-1">
+//            Request Blood
+//          </Button>
+//          <Button variant="outline" size="icon">
+//            <ArrowUpRight className="w-4 h-4" />
+//          </Button>
+//        </div>
+//      </div>
+//    </div>
+//  );
+//};
 //
 //const SearchForBlood = () => {
 //  const bloodGroups = ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"];
@@ -120,6 +221,7 @@
 //  const [isLoading, setIsLoading] = useState(false);
 //  const [allBloodBanks, setAllBloodBanks] = useState([]);
 //  const [initialLoading, setInitialLoading] = useState(true);
+//  const [selectedBank, setSelectedBank] = useState(null);
 //
 //  // Fetch all blood banks on component mount
 //  useEffect(() => {
@@ -129,7 +231,6 @@
 //        const data = await response.json();
 //        
 //        if (data.success) {
-//          // Transform data to ensure all fields exist, use '---' for missing fields
 //          const transformedData = data.bloodBanks.map(bank => ({
 //            id: bank.id || '---',
 //            name: bank.name || '---',
@@ -137,6 +238,11 @@
 //            distance: bank.distance || '---',
 //            available: bank.available || '---',
 //            lastUpdated: bank.lastUpdated || '---',
+//            phone: bank.phone || '---',
+//            email: bank.email || '---',
+//            working_hours: bank.working_hours || '---',
+//            profile_img: bank.profile_img || '---',
+//            is_open: bank.is_open || false,
 //            ...bank
 //          }));
 //          setAllBloodBanks(transformedData);
@@ -157,7 +263,6 @@
 //    setIsLoading(true);
 //    
 //    try {
-//      // Filter blood banks based on search params
 //      let filtered = allBloodBanks;
 //
 //      if (searchParams.bloodGroup) {
@@ -206,10 +311,9 @@
 //        {/* Search Form */}
 //        <Card className="p-6 mb-6">
 //          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-//            {/* Blood Group Selection */}
 //            <div>
 //              <label className="block text-sm font-medium text-gray-700 mb-2">
-//                Blood Group *
+//                Blood Group
 //              </label>
 //              <Select
 //                value={searchParams.bloodGroup}
@@ -224,10 +328,9 @@
 //              </Select>
 //            </div>
 //
-//            {/* Component Selection */}
 //            <div>
 //              <label className="block text-sm font-medium text-gray-700 mb-2">
-//                Component *
+//                Component
 //              </label>
 //              <Select
 //                value={searchParams.component}
@@ -242,10 +345,9 @@
 //              </Select>
 //            </div>
 //
-//            {/* Radius Input */}
 //            <div>
 //              <label className="block text-sm font-medium text-gray-700 mb-2">
-//                Search Radius (km) *
+//                Search Radius (km)
 //              </label>
 //              <Input
 //                type="number"
@@ -257,11 +359,10 @@
 //              />
 //            </div>
 //
-//            {/* Search Button */}
 //            <div className="flex items-end">
 //              <Button
 //                onClick={handleSearch}
-//                disabled={!searchParams.bloodGroup || !searchParams.component || !searchParams.radius || isLoading}
+//                disabled={isLoading}
 //                className="w-full"
 //              >
 //                {isLoading ? (
@@ -284,21 +385,71 @@
 //              <h2 className="text-xl font-semibold text-gray-900">
 //                Found {searchResults.length} blood bank(s)
 //              </h2>
-//              <Badge variant="default">
-//                {searchParams.bloodGroup || 'All'} • {searchParams.component || 'All'}
-//              </Badge>
+//              {(searchParams.bloodGroup || searchParams.component) && (
+//                <Badge variant="default">
+//                  {searchParams.bloodGroup || 'All'} • {searchParams.component || 'All'}
+//                </Badge>
+//              )}
 //            </div>
 //
 //            <div className="space-y-4">
 //              {searchResults.map((bloodBank) => (
-//                <BloodBankBriefInfoCard key={bloodBank.id} bloodBank={bloodBank} />
+//                <div
+//                  key={bloodBank.id}
+//                  className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-all duration-200 hover:border-red-200"
+//                >
+//                  <div className="flex items-start justify-between gap-6">
+//                    <div className="flex gap-4 flex-1">
+//                      <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-red-50 to-red-100 flex items-center justify-center flex-shrink-0">
+//                        {bloodBank.profile_img && bloodBank.profile_img !== '---' ? (
+//                          <img 
+//                            src={bloodBank.profile_img} 
+//                            alt={bloodBank.name}
+//                            className="w-full h-full object-cover rounded-lg"
+//                          />
+//                        ) : (
+//                          <Building2 className="w-8 h-8 text-red-600" />
+//                        )}
+//                      </div>
+//
+//                      <div className="flex-1 min-w-0">
+//                        <h3 className="text-lg font-semibold text-gray-900 mb-1">
+//                          {bloodBank.name}
+//                        </h3>
+//                        <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
+//                          <MapPin className="w-4 h-4 flex-shrink-0" />
+//                          <span className="truncate">{bloodBank.address}</span>
+//                        </div>
+//                        <div className="flex items-center gap-4">
+//                          <Badge variant={(bloodBank.is_open === true || bloodBank.is_open === 'true') ? "success" : "default"}>
+//                            {(bloodBank.is_open === true || bloodBank.is_open === 'true') ? "Open" : "Closed"}
+//                          </Badge>
+//                          {bloodBank.distance !== '---' && (
+//                            <span className="text-sm text-gray-600">
+//                              {bloodBank.distance} km away
+//                            </span>
+//                          )}
+//                        </div>
+//                      </div>
+//                    </div>
+//
+//                    <div className="flex items-center gap-2 flex-shrink-0">
+//                      <Button
+//                        variant="outline"
+//                        onClick={() => setSelectedBank(bloodBank)}
+//                      >
+//                        More Info
+//                      </Button>
+//                    </div>
+//                  </div>
+//                </div>
 //              ))}
 //            </div>
 //          </div>
 //        )}
 //
 //        {/* Empty State */}
-//        {!isLoading && searchResults.length === 0 && searchParams.bloodGroup && (
+//        {!isLoading && searchResults.length === 0 && (searchParams.bloodGroup || searchParams.component) && (
 //          <Card className="p-12 text-center">
 //            <Droplet className="w-16 h-16 text-gray-300 mx-auto mb-4" />
 //            <h3 className="text-lg font-medium text-gray-900 mb-2">No results found</h3>
@@ -306,6 +457,18 @@
 //          </Card>
 //        )}
 //      </div>
+//
+//      {/* Popup Dialog */}
+//      <Dialog open={!!selectedBank} onOpenChange={() => setSelectedBank(null)}>
+//        <DialogContent onClose={() => setSelectedBank(null)}>
+//          {selectedBank && (
+//            <BloodPopupCard 
+//              bloodBank={selectedBank} 
+//              onClose={() => setSelectedBank(null)}
+//            />
+//          )}
+//        </DialogContent>
+//      </Dialog>
 //    </div>
 //  );
 //};
@@ -443,6 +606,39 @@ const DialogContent = ({ children, onClose }) => (
 );
 
 const BloodPopupCard = ({ bloodBank, onClose }) => {
+  const [requestLoading, setRequestLoading] = useState(false);
+  const [requestMessage, setRequestMessage] = useState("");
+
+  const handleRequestBlood = async () => {
+    setRequestLoading(true);
+    setRequestMessage("");
+
+    try {
+      const response = await fetch('http://10.79.215.218:3000/send-whatsapp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          to: '+918551937159',
+          message: `Urgent: Blood request. Please contact us for urgent blood supply needs.`
+        })
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        setRequestMessage("Blood request sent successfully via WhatsApp!");
+      } else {
+        setRequestMessage("Failed to send request. Please try again.");
+      }
+    } catch (error) {
+      console.error('Error sending blood request:', error);
+      setRequestMessage("Error sending request. Please try again.");
+    } finally {
+      setRequestLoading(false);
+    }
+  };
+
   return (
     <div>
       <div className="relative h-48 bg-gradient-to-br from-red-50 to-red-100">
@@ -501,9 +697,23 @@ const BloodPopupCard = ({ bloodBank, onClose }) => {
           )}
         </div>
 
+        {requestMessage && (
+          <div className={`p-3 rounded-lg text-sm ${
+            requestMessage.includes("successfully") 
+              ? "bg-green-100 text-green-800" 
+              : "bg-red-100 text-red-800"
+          }`}>
+            {requestMessage}
+          </div>
+        )}
+
         <div className="flex gap-3 pt-4 border-t">
-          <Button className="flex-1">
-            Request Blood
+          <Button 
+            className="flex-1"
+            onClick={handleRequestBlood}
+            disabled={requestLoading}
+          >
+            {requestLoading ? "Sending..." : "Request Blood"}
           </Button>
           <Button variant="outline" size="icon">
             <ArrowUpRight className="w-4 h-4" />

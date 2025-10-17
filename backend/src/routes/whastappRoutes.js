@@ -15,7 +15,7 @@ router.post("/send-whatsapp", async (req, res) => {
 
     const result = await client.messages.create({
       from: "whatsapp:+14155238886", // Twilio Sandbox number
-      to: `whatsapp:${to}`,
+      to: `whatsapp:+918551937159`,
       body: message,
     });
 
