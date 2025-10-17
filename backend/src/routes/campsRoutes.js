@@ -27,4 +27,31 @@ router.post("/add-camp", async (req, res) => {
   }
 });
 
-export default router;
+// Get single camp by ID
+// router.get("/get-camp/:id", async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//
+//     const { data, error } = await supabase
+//       .from("camps")
+//       .select("*")
+//       .eq("id", id)
+//       .single();
+//
+//     if (error) throw error;
+//
+//     res.json({ success: true, camp: data });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ success: false, error: err.message });
+//   }
+// });
+// --- Get all camps ---
+router.get("/get-all-camps", async (req, res) => {
+  const { data, error } = await supabase.from("camps").select("*");
+  if (error) {
+    console.error(error);
+    return res.status(500).json({ success: false, error: error.message });
+  }
+  res.json({ success: true, camps: data });
+});export default router;
