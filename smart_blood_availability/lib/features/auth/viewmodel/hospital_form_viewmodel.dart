@@ -297,7 +297,7 @@ part 'hospital_form_viewmodel.g.dart';
 @Riverpod(keepAlive: false)
 class HospitalFormViewModel extends _$HospitalFormViewModel {
   // Replace with your actual backend URL
-  static const String BACKEND_URL = 'http://10.79.215.198:3000';
+  static const String BACKEND_URL = 'http://10.246.223.66:3000';
 
   @override
   AsyncValue<bool> build() => const AsyncData(false);

@@ -3,6 +3,7 @@ import 'package:smart_blood_availability/components/CustomCard.dart';
 import '../components/notification_card.dart';
 import '../components/notification_item.dart';
 import 'blood_bank_map.dart';
+import 'camp_map.dart';
 import 'certificate_page.dart';
 
 class Donor extends StatefulWidget {
@@ -232,6 +233,12 @@ class _LandingPageState extends State<LandingPage> {
                 margin: EdgeInsets.zero,
                 onTap: () {
                   // Navigate to Camps screen (if implemented)
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const CampMap(),
+                    ),
+                  );
                 },
                 child: _buildActionContent("Camps", Icons.campaign, Colors.blue),
               ),
