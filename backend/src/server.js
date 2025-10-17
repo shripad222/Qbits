@@ -4,6 +4,7 @@ import authRoutes from './routes/authRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
 import campRoutes from './routes/campsRoutes.js';
 import whatsappRoutes from './routes/whastappRoutes.js';
+import blood_bank from './routes/blood_bank.js';
 
 import dotenv from "dotenv";
 dotenv.config(); // looks in the same folder by default
@@ -19,6 +20,7 @@ app.use('/api/auth', authRoutes)
 app.use('/', notificationRoutes)
 app.use('/', campRoutes)
 app.use('/', whatsappRoutes)
+app.use('/', blood_bank)
 
 // server.js (or in a new routes file)
 app.get('/api/test', (req, res) => {
