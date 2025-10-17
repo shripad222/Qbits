@@ -1,13 +1,8 @@
-
 import React, { useState } from "react";
-import GlassCard from "../../../shared/components/GlassCard";
-import { Activity, Droplet, TrendingUp, AlertTriangle, Calendar } from "lucide-react";
+import { Activity, Droplet, TrendingUp, AlertTriangle, Calendar, Plus, Minus } from "lucide-react";
 
-
-  
-export default function BloodBankInfo({   }) {
-  const [sortBy, setSortBy] = useState("type");
-  const bloodData = [
+export default function DetailedBloodBankInfo() {
+  const [bloodData, setBloodData] = useState([
     { type: "O+", units: 42, updatedAt: "2025-10-15" },
     { type: "O-", units: 8, updatedAt: "2025-10-14" },
     { type: "A+", units: 28, updatedAt: "2025-10-15" },
@@ -16,14 +11,27 @@ export default function BloodBankInfo({   }) {
     { type: "B-", units: 6, updatedAt: "2025-10-12" },
     { type: "AB+", units: 12, updatedAt: "2025-10-14" },
     { type: "AB-", units: 5, updatedAt: "2025-10-13" },
-  ];
-  
+  ]);
+
+  const [sortBy, setSortBy] = useState("type");
+
+  const updateUnits = (index, amount) => {
+    const newData = [...bloodData];
+    const newUnits = Math.max(0, newData[index].units + amount);
+    newData[index] = {
+      ...newData[index],
+      units: newUnits,
+      updatedAt: new Date().toISOString().split('T')[0]
+    };
+    setBloodData(newData);
+  };
+
   if (!bloodData.length) {
     return (
-      < >
+      <div>
         <Droplet className="w-16 h-16 mx-auto mb-4 text-gray-400 opacity-50" />
         <p className="text-lg text-gray-500 dark:text-gray-400">No blood bank data available.</p>
-      </>
+      </div>
     );
   }
 
@@ -34,7 +42,7 @@ export default function BloodBankInfo({   }) {
   });
 
   return (
-<>
+    <div>
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-red-500 to-pink-600 flex items-center justify-center shadow-lg">
@@ -65,12 +73,14 @@ export default function BloodBankInfo({   }) {
             <tr className="border-b border-white/20 dark:border-gray-700/50">
               <th className="text-left p-4 text-sm font-semibold text-gray-700 dark:text-gray-300">Blood Type</th>
               <th className="text-left p-4 text-sm font-semibold text-gray-700 dark:text-gray-300">Available Units</th>
+              <th className="text-left p-4 text-sm font-semibold text-gray-700 dark:text-gray-300">Actions</th>
               <th className="text-left p-4 text-sm font-semibold text-gray-700 dark:text-gray-300">Last Updated</th>
               <th className="text-left p-4 text-sm font-semibold text-gray-700 dark:text-gray-300">Status</th>
             </tr>
           </thead>
           <tbody>
             {sortedData.map((item, idx) => {
+              const originalIdx = bloodData.findIndex(b => b.type === item.type);
               const lowStock = item.units < 10;
               return (
                 <tr
@@ -88,6 +98,25 @@ export default function BloodBankInfo({   }) {
                   <td className="p-4">
                     <span className="text-2xl font-bold text-gray-900 dark:text-white">{item.units}</span>
                     <span className="text-sm text-gray-600 dark:text-gray-400 ml-1">units</span>
+                  </td>
+                  <td className="p-4">
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => updateUnits(originalIdx, -1)}
+                        disabled={item.units === 0}
+                        className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-red-500/20 hover:bg-red-500/30 disabled:bg-gray-300/20 disabled:cursor-not-allowed text-red-600 dark:text-red-400 transition-colors"
+                        title="Remove unit"
+                      >
+                        <Minus className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => updateUnits(originalIdx, 1)}
+                        className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-green-500/20 hover:bg-green-500/30 text-green-600 dark:text-green-400 transition-colors"
+                        title="Add unit"
+                      >
+                        <Plus className="w-4 h-4" />
+                      </button>
+                    </div>
                   </td>
                   <td className="p-4">
                     <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
@@ -113,6 +142,6 @@ export default function BloodBankInfo({   }) {
           </tbody>
         </table>
       </div>
-</>
+    </div>
   );
 }
