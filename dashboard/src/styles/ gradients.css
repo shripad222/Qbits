@@ -1,0 +1,40 @@
+/* gradients.css */
+
+/* --- Primary gradients --- */
+.gradient-blue {
+  background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+}
+
+.gradient-green {
+  background: linear-gradient(135deg, #065f46, #10b981);
+}
+
+.gradient-red {
+  background: linear-gradient(135deg, #7f1d1d, #ef4444);
+}
+
+.gradient-purple {
+  background: linear-gradient(135deg, #4c1d95, #a855f7);
+}
+
+/* --- Dashboard glow gradients --- */
+.gradient-sunset {
+  background: linear-gradient(135deg, #ff6b6b, #feca57);
+}
+
+.gradient-aqua {
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+}
+
+.gradient-space {
+  background: radial-gradient(circle at top left, #1e3a8a, #111827);
+}
+
+/* --- Subtle overlays --- */
+.gradient-overlay {
+  background: linear-gradient(
+    to bottom right,
+    rgba(255, 255, 255, 0.15),
+    rgba(0, 0, 0, 0.2)
+  );
+}
