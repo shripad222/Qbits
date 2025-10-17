@@ -11,7 +11,7 @@ part 'donor_form_viewmodel.g.dart';
 @riverpod
 class DonorFormViewModel extends _$DonorFormViewModel {
   // Replace with your actual backend URL
-  static const String BACKEND_URL = 'http://10.246.223.66:3000';
+  static const String BACKEND_URL = 'http://10.79.215.218:3000';
 
   @override
   AsyncValue<void> build() => const AsyncData(null);
@@ -255,6 +255,8 @@ class DonorFormViewModel extends _$DonorFormViewModel {
         final responseData = jsonDecode(response.body);
 
         if (responseData['success'] ?? false) {
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setString('user_mobile', formFields['mobileNumber'] ?? '');
           state = const AsyncData(null);
         } else {
           throw Exception(responseData['error'] ?? 'Registration failed');

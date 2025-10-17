@@ -256,4 +256,82 @@ router.post(
   }
 );
 
+// Login endpoint for donors
+router.post("/login-donor", async (req, res) => {
+  try {
+    const { mobile_no, password } = req.body;
+
+    // Find donor by mobile number
+    const { data: donors, error } = await supabase
+      .from("donor")
+      .select("*")
+      .eq("mobile_no", mobile_no)
+      .limit(1);
+
+    if (error) throw error;
+
+    if (!donors || donors.length === 0) {
+      return res.status(401).json({ 
+        success: false, 
+        error: "No account found with this mobile number" 
+      });
+    }
+
+    const donor = donors[0];
+
+    // Compare password
+    const isPasswordValid = await bcrypt.compare(password, donor.pasword);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({ 
+        success: false, 
+        error: "Invalid password" 
+      });
+    }
+
+    // Return donor data (excluding password)
+    const { pasword, ...donorData } = donor;
+    
+    res.json({ 
+      success: true, 
+      donor: donorData,
+      message: "Login successful"
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Get donor by mobile number (for fetching user data)
+router.get("/get-donor/:mobile_no", async (req, res) => {
+  try {
+    const { mobile_no } = req.params;
+
+    const { data: donors, error } = await supabase
+      .from("donor")
+      .select("*")
+      .eq("mobile_no", mobile_no)
+      .limit(1);
+
+    if (error) throw error;
+
+    if (!donors || donors.length === 0) {
+      return res.status(404).json({ 
+        success: false, 
+        error: "Donor not found" 
+      });
+    }
+
+    const { pasword, ...donorData } = donors[0];
+    
+    res.json({ success: true, donor: donorData });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 export default router;

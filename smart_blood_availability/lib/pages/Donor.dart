@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_blood_availability/components/CustomCard.dart';
+import 'package:smart_blood_availability/core/services/auth_service.dart';
+import 'package:smart_blood_availability/pages/login_page.dart';
 import '../components/notification_card.dart';
 import '../components/notification_item.dart';
 import 'blood_bank_map.dart';
@@ -96,8 +98,15 @@ class _LandingPageState extends State<LandingPage> {
             ],
           ),
           IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.settings_outlined, color: Colors.black87),
+            onPressed: () async {
+              final authService = AuthService();
+              await authService.logout();
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => const LoginPage()),
+              );
+            },
+            icon: const Icon(Icons.logout, color: Colors.black87),
           ),
         ],
       ),

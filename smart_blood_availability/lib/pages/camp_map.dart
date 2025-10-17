@@ -26,7 +26,8 @@ class _CampMapState extends State<CampMap> {
     try {
       print('Fetching camps...');
       // final res = await http.get(Uri.parse('http://10.246.223.66:3000/api/camps/get-camps'));
-      final res = await http.get(Uri.parse('http://10.246.223.66:3000/get-all-camps'));
+      // BACKEND_URL
+      final res = await http.get(Uri.parse('http://10.79.215.218:3000/get-all-camps'));
       print('Response status: ${res.statusCode}');
       print('Response body: ${res.body}');
 
